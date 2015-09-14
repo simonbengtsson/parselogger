@@ -1,6 +1,8 @@
 * {
     box-sizing: border-box;
     font-family: 'Roboto Condensed', sans-serif;
+    outline: 0 none transparent;
+    -moz-appearance:none;
 }
 
 h1 {
@@ -24,10 +26,8 @@ html, body {
     background: #2c3e50; // rgb(62, 73, 81);
     width: 250px;
     height: 100%;
+    overflow: auto;
     padding: 20px;
-}
-
-.sidebar {
     color: #fff;
 }
 
@@ -41,7 +41,8 @@ html, body {
 .sidebar .app-config textarea {
     width: 100%;
     padding: 5px 10px;
-    outline: 0;
+    outline: none !important;
+    box-shadow: 0;
     margin-bottom: 10px;
     font-size: 14px;
     color: #777;
