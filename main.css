@@ -5,7 +5,7 @@
 
 h1 {
     font-family: 'Source Code Pro', serif;
-    border-bottom: solid #fff 3px;
+    border-bottom: solid #fff 3px; // rgb(66, 129, 250)
     text-align: center;
     font-weight: 400;
     font-size: 28px;
@@ -21,7 +21,7 @@ html, body {
 
 .sidebar {
     position: fixed;
-    background: #34495e;
+    background: #2c3e50; // rgb(62, 73, 81);
     width: 250px;
     height: 100%;
     padding: 20px;
@@ -38,25 +38,34 @@ html, body {
     font-weight: 300;
 }
 
-.sidebar .app-config input {
+.sidebar .app-config textarea {
     width: 100%;
     padding: 5px 10px;
     outline: 0;
     margin-bottom: 10px;
-    font-size: 18px;
+    font-size: 14px;
+    color: #777;
 }
 
-.sidebar .log-types {
+.app-config label {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 3px;
+    display: block;
+}
+
+.sidebar .log-filter {
     padding-left: 0;
     list-style: none;
 }
 
-.sidebar .log-types li {
+.sidebar .log-filter li {
     line-height: 26px;
 }
 
-.sidebar .log-types label {
+.sidebar .log-filter label {
     cursor: pointer;
+    font-size: 20px;
 }
 
 .log-container {
@@ -73,34 +82,91 @@ html, body {
     padding-top: 300px;
 }
 
-.log-container table {
-    width: 100%;
+.logs {
+    margin: 0;
     display: none;
-    border-spacing: 0;
     color: #888;
     font-size: 14px;
+    list-style: none;
+    padding-left: 0;
+    width: 100%;
 }
 
-.log-container th {
-    background: #e74c3c;
-    color: #fff;
-    line-height: 30px;
-}
-
-.log-container td, .log-container th {
-    text-align: left;
-    overflow: hidden;
-    border: 0;
+.logs li {
     padding: 5px;
-    max-width: 100px;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    font-size: 16px;
 }
 
-#logs-table strong {
-    text-transform: capitalize;
+.logs li span {
+    display: inline-block;
+}
+.logs li .type, .logs li .level, .logs li .timestamp {
+    text-transform: uppercase;
+    color: #fff;
+    padding: 3px 7px;
+    font-size: 18px;
+    border-radius: 3px;
+    margin-right: 5px;
+    text-align: center;
+    background: #95a5a6;
 }
 
-.log-container tr.odd {
-    background-color: #eee;
+.logs li.odd {
+    background-color: #f5f5f5;
+}
+
+/* SPINNER */
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    background-color: #ccc;
+    display: none;
+    margin: 50px auto;
+    -webkit-animation: sk-rotateplane 1.2s infinite ease-in-out;
+    animation: sk-rotateplane 1.2s infinite ease-in-out;
+}
+
+@-webkit-keyframes sk-rotateplane {
+    0% { -webkit-transform: perspective(120px) }
+    50% { -webkit-transform: perspective(120px) rotateY(180deg) }
+    100% { -webkit-transform: perspective(120px) rotateY(180deg)  rotateX(180deg) }
+}
+
+@keyframes sk-rotateplane {
+    0% {
+        transform: perspective(120px) rotateX(0deg) rotateY(0deg);
+        -webkit-transform: perspective(120px) rotateX(0deg) rotateY(0deg)
+    } 50% {
+          transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg);
+          -webkit-transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg)
+      } 100% {
+            transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
+            -webkit-transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
+        }
+}
+
+
+/* FONT AWESOME RADIO AND CHECKBOXES */
+
+input[type="radio"],
+input[type="checkbox"] {
+    display: none;
+}
+label:before {
+    font-family: 'FontAwesome',serif;
+    width: 1.25em;
+    display: inline-block;
+}
+input[type="radio"] + label:before  {
+    content: "\f10c"; /* circle-blank */
+}
+input[type="radio"]:checked + label:before {
+    content: "\f111"; /* circle */
+}
+input[type="checkbox"] + label:before {
+    content: "\f0c8"; /* check-empty f0c8 f096 */
+}
+input[type="checkbox"]:checked + label:before {
+    content: "\f14a"; /* check f14a f046*/
 }

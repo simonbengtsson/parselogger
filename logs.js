@@ -1,8 +1,8 @@
-var Logs = function() {
+var Logs = function () {
 
     var apiUrl = 'https://api.parse.com/1/scriptlog';
 
-    this.fetch = function(appId, apiKey) {
+    this.fetch = function (appId, apiKey) {
         return fetch(apiUrl + '?n=10000', {
             headers: {
                 'X-Parse-Application-Id': appId,
@@ -26,10 +26,6 @@ var Logs = function() {
     function parseJSON(response) {
         return response.json()
     }
-
-    // I2015-09-13T20:58:28.069Z]Deployed v2610 with triggers: _User: before_save after_save Category: before_save before_delete after_delete Store: after_save Product: before_save before_delete after_delete Search: before_save after_delete Picture: before_save before_delete Tag: before_save after_delete Flag: before_save after_save Person: before_save Like: before_save after_save after_delete Cloud Functions: aggregateSourcesInPictures1 aggregateSourcesInPictures2 aggregateSourcesInPictures3 aggregateSourcesInPictures4 convertPicturesToSources deleteOriginalSources flagProduct followSearch followStore getCategoryTree getDiscoverFeed getFollowFeed getFollowedSearches getLookbook getProductDetails getSearchFeed getSearchSuggestions likeProduct randomizeSortScore recalculateProductCounts
-    // E2015-09-13T21:36:26.528Z]v2618 before_save triggered for _User: Input: {"original":null,"update":{"authData":{"facebook":{"access_token":"CAAWBMljQZBYIBAC7ZCEpn7YNjZB8Se1u5FLm8oH1w71QfJTm1bltsgI3CO0IpVuZApq2qDBfaLaNrxzm5haTtzDD0AfZAC4amEpBCsoAf2MB265OXcSZAR7K8ct8pjIdD0LgZChlQSH99dTDcnZCBaNU0RhiRPOsW1AdIJKW3TLHynbqTIiMdZBV2c82jrCbHRFJGbl5QSHwoMHsR6V18KqMAUTYSGDqo0qcZD","expiration_date":"2015-11-12T20:24:30.821Z","id":"10204927489379402"}},"username":"4ZNlCl6F9FuZcIZZoAuuTtBqG"}} Result: Email does already exist for another user.
-    // I2015-09-13T20:57:21.161Z]Custom message sent with console.log()
 
     function parseLogMessages(response) {
         var logs = [];
@@ -122,7 +118,7 @@ var Logs = function() {
             result = parts[1].replace('Result:', '').trim();
             try { result = JSON.parse(result); } catch (e) {}
         } else {
-            type = 'custom';
+            type = 'other';
         }
         return {
             'type': type,
