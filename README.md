@@ -3,4 +3,4 @@
 A custom parse logger
 
 ## Deploy
-rsync -a ./ root@flown.io:~/sites/parselogger.flown.io
+rsync -a web/ root@flown.io:~/sites/parselogger.flown.io
