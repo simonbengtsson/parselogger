@@ -18,7 +18,7 @@
 
     <div class="app-config">
         <input placeholder="App ID" id="app-id">
-        <input placeholder="API key" id="api-key">
+        <input placeholder="REST API Key" id="api-key">
     </div>
 
     <ul class="log-types">
@@ -30,7 +30,7 @@
     </ul>
 </section>
 <section class="log-container">
-    <p id="no-logs">Enter app id and api key</p>
+    <p id="no-logs">Enter App ID and REST API Key</p>
     <table id="logs-table">
         <colgroup>
             <col style="width: auto;">
@@ -107,7 +107,7 @@
                     cell = newRow.insertCell();
                     cell.innerHTML = log['header'];
 
-                    var insert = function(prop, log, i) {
+                    var insert = function (prop, log, i) {
                         if (log[prop]) {
                             var row = logsTableElem.insertRow();
                             if (i % 2 !== 0) row.className += ' odd';
@@ -123,6 +123,9 @@
                     insert('cloudFunctions', log, i);
                     insert('user', log, i);
                 }
+            }).catch(function () {
+                noLogsElem.style.display = 'block';
+                logsTableElem.style.display = 'none';
             });
         }
 
