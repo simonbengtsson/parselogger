@@ -1,0 +1,106 @@
+* {
+    box-sizing: border-box;
+    font-family: 'Roboto Condensed', sans-serif;
+}
+
+h1 {
+    font-family: 'Source Code Pro', serif;
+    border-bottom: solid #fff 3px;
+    text-align: center;
+    font-weight: 400;
+    font-size: 28px;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}
+
+html, body {
+    height: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar {
+    position: fixed;
+    background: #34495e;
+    width: 250px;
+    height: 100%;
+    padding: 20px;
+}
+
+.sidebar {
+    color: #fff;
+}
+
+.sidebar .desc {
+    text-align: justify;
+    line-height: 24px;
+    font-size: 16px;
+    font-weight: 300;
+}
+
+.sidebar .app-config input {
+    width: 100%;
+    padding: 5px 10px;
+    outline: 0;
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+.sidebar .log-types {
+    padding-left: 0;
+    list-style: none;
+}
+
+.sidebar .log-types li {
+    line-height: 26px;
+}
+
+.sidebar .log-types label {
+    cursor: pointer;
+}
+
+.log-container {
+    margin-left: 250px;
+    height: 100%;
+}
+
+.log-container #no-logs {
+    color: #ccc;
+    margin: 0;
+    font-family: 'Source Code Pro', serif;
+    text-align: center;
+    font-size: 34px;
+    padding-top: 300px;
+}
+
+.log-container table {
+    width: 100%;
+    display: none;
+    border-spacing: 0;
+    color: #888;
+    font-size: 14px;
+}
+
+.log-container th {
+    background: #e74c3c;
+    color: #fff;
+    line-height: 30px;
+}
+
+.log-container td, .log-container th {
+    text-align: left;
+    overflow: hidden;
+    border: 0;
+    padding: 5px;
+    max-width: 100px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+#logs-table strong {
+    text-transform: capitalize;
+}
+
+.log-container tr.odd {
+    background-color: #eee;
+}

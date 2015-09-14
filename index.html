@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Parse Logger</title>
+    <link href='https://fonts.googleapis.com/css?family=Oswald:400,300,700' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Source+Code+Pro:400,200,900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="main.css"/>
+</head>
+<body>
+<section class="sidebar">
+
+    <h1>Parse Logger</h1>
+
+    <p class="desc">Debugging cloud code in parse is notoriously hard. This is a project trying to make
+        it somewhat easier by displaying logs in a friendlier way.</p>
+
+    <div class="app-config">
+        <input placeholder="App ID" id="app-id">
+        <input placeholder="API key" id="api-key">
+    </div>
+
+    <ul class="log-types">
+        <li><label><input type="checkbox" checked>Deployments</label></li>
+        <li><label><input type="checkbox" checked>Cloud Functions</label></li>
+        <li><label><input type="checkbox" checked>Triggers</label></li>
+        <li><label><input type="checkbox" checked>Endpoints</label></li>
+        <li><label><input type="checkbox" checked>Others</label></li>
+    </ul>
+</section>
+<section class="log-container">
+    <p id="no-logs">Enter app id and api key</p>
+    <table id="logs-table">
+        <colgroup>
+            <col style="width: auto;">
+            <col style="width: auto;">
+            <col style="width: auto;">
+            <col style="width: auto;">
+            <col style="width: 50%;">
+        </colgroup>
+        <tr>
+            <th>Timestamp</th>
+            <th>Type</th>
+            <th>Type name</th>
+            <th>Version</th>
+            <th>Log</th>
+        </tr>
+    </table>
+</section>
+<script src="bower_components/es6-promise/promise.min.js"></script>
+<script src="bower_components/fetch/fetch.js"></script>
+<script src="logs.js"></script>
+<script>
+    +function () {
+        var noLogsElem = document.getElementById('no-logs');
+        var appIdElem = document.getElementById('app-id');
+        var apiKeyElem = document.getElementById('api-key');
+        var logsTableElem = document.querySelector('#logs-table');
+
+        appIdElem.value = localStorage['appId'] || '';
+        apiKeyElem.value = localStorage['apiKey'] || '';
+
+        function changed() {
+            var appId = appIdElem.value.trim();
+            var apiKey = apiKeyElem.value.trim();
+
+            if (appId && apiKey && appId.length >= 40 && apiKey.length >= 40) {
+                localStorage['appId'] = appId;
+                localStorage['apiKey'] = apiKey;
+
+                fetchLogs(appId, apiKey);
+            }
+        }
+
+        changed();
+
+        var inputs = document.querySelectorAll('.sidebar input');
+        for (var i = 0; i < inputs.length; i++) {
+            inputs[i].oninput = changed; // Inputs
+            inputs[i].onclick = changed; // Checkboxes
+        }
+
+        // FUNCTIONS
+
+        function fetchLogs(appId, apiKey) {
+            var service = new Logs();
+            service.fetch(appId, apiKey).then(function (logs) {
+                noLogsElem.style.display = logs.length > 0 ? 'none' : 'block';
+                logsTableElem.style.display = logs.length > 0 ? 'table' : 'none';
+
+                for (var i = 0; i < logs.length; i++) {
+                    var log = logs[i];
+
+                    var newRow = logsTableElem.insertRow();
+                    if (i % 2 !== 0) newRow.className += ' odd';
+
+                    var cell = newRow.insertCell();
+                    var date = new Date(log['timestamp'].iso);
+                    cell.innerHTML = formatDate(date);
+                    cell = newRow.insertCell();
+                    cell.innerHTML = log['type'];
+                    cell = newRow.insertCell();
+                    cell.innerHTML = log['typeName'];
+                    cell = newRow.insertCell();
+                    cell.innerHTML = log['deployedVersion'];
+                    cell = newRow.insertCell();
+                    cell.innerHTML = log['header'];
+
+                    var insert = function(prop, log, i) {
+                        if (log[prop]) {
+                            var row = logsTableElem.insertRow();
+                            if (i % 2 !== 0) row.className += ' odd';
+                            var cell = row.insertCell();
+                            var val = typeof log[prop] !== 'string' ? JSON.stringify(log[prop]) : log[prop];
+                            cell.innerHTML = '<strong>' + prop + ':</strong> ' + val;
+                            cell.colSpan = 5;
+                        }
+                    };
+                    insert('input', log, i);
+                    insert('result', log, i);
+                    insert('triggers', log, i);
+                    insert('cloudFunctions', log, i);
+                    insert('user', log, i);
+                }
+            });
+        }
+
+        function formatDate(date) {
+            var year = date.getFullYear();
+            var month = '' + (date.getMonth() + 1);
+            var day = '' + date.getDate();
+
+            var hour = ("0" + date.getHours()).slice(-2);
+            var min = ("0" + date.getMinutes()).slice(-2);
+            var sec = ("0" + date.getSeconds()).slice(-2);
+
+            if (month.length < 2) month = '0' + month;
+            if (day.length < 2) day = '0' + day;
+
+            return [year, month, day].join('-') + ' ' + hour + ':' + min + ':' + sec;
+        }
+
+    }();
+</script>
+</body>
+</html>
